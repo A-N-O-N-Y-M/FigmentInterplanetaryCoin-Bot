@@ -455,17 +455,17 @@ async def questions_handler(message: types.Message):
 
 @dp.callback_query_handler(text='start_call')
 async def how_bot_works(call: types.CallbackQuery):
-#     if call.message.chat.id in [1251526792]:
-#         reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
-#             types.InlineKeyboardButton(text="Как работает бот", callback_data="how_this_bot_works"),
-#             types.InlineKeyboardButton(text="Как поинтересоваться", callback_data="how_do_question"),
-#             types.InlineKeyboardButton(text="Админ панель", callback_data="admin_panel")
-#         )
-#     else:
-#         reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
-#             types.InlineKeyboardButton(text="Как работает бот", callback_data="how_this_bot_works"),
-#             types.InlineKeyboardButton(text="Как поинтересоваться", callback_data="how_do_question")
-#         )
+     if call.message.chat.id in ['''User_IDs of Adminitstrators''']:
+         reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
+             types.InlineKeyboardButton(text="Как работает бот", callback_data="how_this_bot_works"),
+             types.InlineKeyboardButton(text="Как поинтересоваться", callback_data="how_do_question"),
+             types.InlineKeyboardButton(text="Админ панель", callback_data="admin_panel")
+         )
+     else:
+         reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
+             types.InlineKeyboardButton(text="Как работает бот", callback_data="how_this_bot_works"),
+             types.InlineKeyboardButton(text="Как поинтересоваться", callback_data="how_do_question")
+         )
 
     reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
         types.InlineKeyboardButton(text='Как работает бот', callback_data='how_this_bot_works'),
