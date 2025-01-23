@@ -1,1 +1,3 @@
+Здесь находится база данных ботов
 
+There is a database of bots here
