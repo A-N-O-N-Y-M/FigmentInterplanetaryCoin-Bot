@@ -24,7 +24,7 @@ async def questions_handler(message: types.Message):
             types.InlineKeyboardButton(text='Как работает бот', callback_data='how_this_bot_works'),
             types.InlineKeyboardButton(text='Как поинтересоваться', callback_data='how_do_question')
         )
-        if message.chat.id in [1251526792]:
+        if message.chat.id in ['''User_IDs of Adminitstrators''']:
             reply_markup.add(types.InlineKeyboardButton(text='Админ панель', callback_data='admin_panel'))
 
         await bot.send_photo(
@@ -65,7 +65,7 @@ async def questions_handler(message: types.Message):
             connection.commit()
             connection.close()
 
-            await bot.send_message(chat_id=1251526792, text=f'Только что был задан новый вопрос от @{message.from_user.username}!\n\nВопрос был записан под номером {hbold(f"#{len(fetch)}")}', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
+            await bot.send_message(chat_id='''User_ID of Owner''', text=f'Только что был задан новый вопрос от @{message.from_user.username}!\n\nВопрос был записан под номером {hbold(f"#{len(fetch)}")}', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                 types.InlineKeyboardButton(text="Удалить", callback_data="understood")
             ), parse_mode='HTML')
 
@@ -145,7 +145,7 @@ async def questions_handler(message: types.Message):
 
                 await message.reply(text=f'''Ваш вопрос "{question_heading}" был успешно закрыт!''', protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                         types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
-                await bot.send_message(chat_id=1251526792, text=f'''Вопрос {hbold(f'"{question_heading}"')} был закрыт автором!''', protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
+                await bot.send_message(chat_id='''User_ID of Owner''', text=f'''Вопрос {hbold(f'"{question_heading}"')} был закрыт автором!''', protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                         types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
             else:
                 await message.reply(
@@ -160,7 +160,7 @@ async def questions_handler(message: types.Message):
                     types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
 
     elif command == 'questions':
-        if message.chat.id == 1251526792:
+        if message.chat.id == '''User_ID of Owner''':
             connection = sqlite3.connect('Resources/Data/DataBase.db')
             cursor = connection.cursor()
             cursor.execute('select * from Data where question_opening=0')
@@ -288,7 +288,7 @@ async def questions_handler(message: types.Message):
             connection.commit()
             connection.close()
 
-            await bot.send_message(chat_id=1251526792,
+            await bot.send_message(chat_id='''User_ID of Owner''',
                                    text=f'Только что была предложения идея от @{message.from_user.username}!\n\nИдея была записана под номером {hbold(f"#{len(fetch)}")}',
                                    reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                        types.InlineKeyboardButton(text="Удалить", callback_data="understood")
@@ -301,7 +301,7 @@ async def questions_handler(message: types.Message):
                     types.InlineKeyboardButton(text="Понятно", callback_data="understood")))
 
     elif command == 'ideas':
-        if message.chat.id == 1251526792:
+        if message.chat.id == '''User_ID of Owner''':
             connection = sqlite3.connect('Resources/Data/DataBase.db')
             cursor = connection.cursor()
             cursor.execute('select * from Ideas where idea_accepted=0')
@@ -471,7 +471,7 @@ async def how_bot_works(call: types.CallbackQuery):
         types.InlineKeyboardButton(text='Как работает бот', callback_data='how_this_bot_works'),
         types.InlineKeyboardButton(text='Как поинтересоваться', callback_data='how_do_question')
     )
-    if call.message.chat.id in [1251526792]:
+    if call.message.chat.id in ['''User_IDs of Adminitstrators''']:
         reply_markup.add(types.InlineKeyboardButton(text='Админ панель', callback_data='admin_panel'))
 
     await call.message.edit_caption(
