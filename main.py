@@ -44,7 +44,7 @@ def timestamp():
     full_date_time = f'{day} {month} {year} - {time}'
 
 async def check_access(user_id):
-    if user_id != 1251526792:
+    if user_id != "Owner UID":
         connection = pymysql.connect(host=db_host, port=db_port, user=db_user, password=db_password, database=db_database,cursorclass=cursors.DictCursor)
         cursor = connection.cursor()
 
@@ -140,10 +140,6 @@ async def add_user(user_id, username, fullname):
                 lst.append(e['user_id'])
 
             if user_id not in lst:
-                # if int(user_id) == 187110373:
-                #     await bot.send_message(chat_id=1251526792, text=f'{hbold("ТРЕВОГА!!!")}\n\nИВАННИКОВ ЗАРЕГИСТРИРОВАЛСЯ В БОТЕ ТОЛЬКО ЧТО!\n\n/off_app ДЛЯ ОТКЛЮЧЕНИЯ ПРИЛОЖЕНИЯ, {hitalic("ЛИБО ЖМИ НА КНОПКУ НИЖЕ.")}\nВЫБОР ЗА ТОБОЙ!', protect_content=True, reply_markup=types.InlineKeyboardMarkup(row_width=1).add(types.InlineKeyboardButton(text="Уже нечего терять", callback_data="understood")), parse_mode='HTML')
-                #     access_value = 0
-                # else:
                 await bot.send_message(chat_id=1251526792,text=f'{hbold("В боте @FigmentInterplanetaryCoin_bot только что зарегистрировался новый пользователь!")}\nUser_ID: <code>{int(user_id)}</code>',protect_content=True,reply_markup=types.InlineKeyboardMarkup(row_width=1).add(types.InlineKeyboardButton(text="Удалить",callback_data="understood")), parse_mode='HTML')
                 access_value = 1
 
@@ -247,12 +243,10 @@ async def add_referral(user_id, referral_id, usrnme, referral_username):
                 pass
 
             if int(referral_id) != int(user_id):
-                # handlers
                 if referral_id not in lst:
                     if noob == 0:
                         if str(referral_id) in lst2:
                             pass
-                            # i am forget why we are needing in this IF...
                         else:
                             if len(lst) <= 4:
                                 print(f"Adding referral: user_id={user_id}, referral_id={referral_id}")
@@ -263,12 +257,8 @@ async def add_referral(user_id, referral_id, usrnme, referral_username):
                                     print(f"Referral {referral_id} added to user {user_id} referrals")
                                 timestamp()
                                 connection.commit()
-                                cursor.execute(f'''update Data set was_added_as_fren=1, was_added_as_fren_datetime='{full_date_time}' where user_id={referral_id}''')
+                                cursor.execute(f'''update Data set was_added_as_fren=1, was_added_as_fren_datetime="{full_date_time}" where user_id={referral_id}''')
                                 connection.commit()
-                                # cursor.execute(f'update Data set skin_11=1 where user_id={user_id}')
-                                # connection.commit()
-                                # cursor.execute(f'update Data set skin_11=1 where user_id={referral_id}')
-                                # connection.commit()
 
                                 await bot.send_message(
                                     chat_id=user_id,
@@ -279,21 +269,15 @@ async def add_referral(user_id, referral_id, usrnme, referral_username):
                             else:
                                 cursor.execute(f'update Data set was_added_as_fren=2 where user_id={referral_id}')
                                 connection.commit()
-                                # If own has 5 frens
 
                     elif noob == 1:
                         pass
-                        # This guy was added as fren to another player
                     elif noob == 2:
                         pass
-                        # Guy was started this bot without link with referral id
             else:
                 pass
-                # Are u kidin' me? U try to add urself to ur referrals
-
     except Exception as ex:
         print(f"Error adding referral {referral_id} to user {user_id} referrals: {ex}")
-        # Kinda logger if we haven't same handlers
 
     connection.close()
 
@@ -316,7 +300,7 @@ async def start(message: types.Message):
         cursor = connection.cursor()
 
         x = await add_user(message.from_user.id, message.from_user.username, message.from_user.full_name)
-        if (x is False) and (message.chat.id != 1251526792):
+        if (x is False) and (message.chat.id != "Owner UID"):
             await message.answer(text=texts.tech_works_now_text, protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(types.InlineKeyboardButton(text="Понятно", callback_data="understood")))
         elif x is True:
             referral_id = await is_referral(message)
@@ -368,12 +352,12 @@ async def help_handler(message: types.Message):
 
 @dp.message_handler(content_types=["document"])
 async def sticker_file_id(message: types.Message):
-    if message.chat.id in [1251526792]:
+    if message.chat.id in ["Admins UID"]:
         await message.answer(f"ID документа {message.document.file_id}")
 
 @dp.message_handler(commands=['show', 'set', 'set_access', 'off_app', 'on_app', 'players', 'notify', 'test'])
 async def command_handler(message: types.Message):
-    if message.chat.id in [1251526792]:
+    if message.chat.id in ["Admins UID"]:
         command = message.text.split()[0][1:]
 
         if command == 'show':
@@ -392,19 +376,19 @@ async def command_handler(message: types.Message):
                 value = args[2]
 
                 if len(value) <= 20:
-                    if int(value) == 1251526792 and message.chat.id != 1251526792:
+                    if int(value) == "Owner UID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}, reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood"))''',
                                             protect_content=True, parse_mode='HTML')
-                    elif int(value) == 1251526792 and message.chat.id == 1251526792:
+                    elif int(value) == "Owner UID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 elif len(value) >= 20:
-                    if str(value) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id != 1251526792:
+                    if str(value) == "Owner FIC ID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}, reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood"))''',
                                             protect_content=True, parse_mode='HTML')
-                    elif str(value) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id == 1251526792:
+                    elif str(value) == "Owner FIC ID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 if access_command == 1:
@@ -476,23 +460,23 @@ async def command_handler(message: types.Message):
                 user_id = args[3]
 
                 if len(user_id) <= 20:
-                    if int(user_id) == 1251526792 and message.chat.id != 1251526792:
+                    if int(user_id) == "Owner UID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}''',
                                             protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
-                    elif int(user_id) == 1251526792 and message.chat.id == 1251526792:
+                    elif int(user_id) == "Owner UID" and message.chat.id == "Owner UID":
                         access_command = 1
-                    elif int(user_id) != 1251526792 and message.chat.id == 1251526792:
+                    elif int(user_id) != "Owner UID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 elif len(user_id) >= 20:
-                    if str(user_id) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id != 1251526792:
+                    if str(user_id) == "Owner FIC ID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}''',
                                             protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
-                    elif str(user_id) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id == 1251526792:
+                    elif str(user_id) == "Owner FIC ID" and message.chat.id == "Owner UID":
                         access_command = 1
-                    elif str(user_id) != '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id == 1251526792:
+                    elif str(user_id) != "Owner FIC ID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 if access_command == 1:
@@ -544,20 +528,20 @@ async def command_handler(message: types.Message):
                 user_id = args[1]
 
                 if len(user_id) <= 20:
-                    if int(user_id) == 1251526792 and message.chat.id != 1251526792:
+                    if int(user_id) == "Owner UID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}''',
                                             protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
-                    elif int(user_id) == 1251526792 and message.chat.id == 1251526792:
+                    elif int(user_id) == "Owner UID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 elif len(user_id) >= 20:
-                    if str(user_id) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id != 1251526792:
+                    if str(user_id) == "Owner FIC ID" and message.chat.id != "Owner UID":
                         await message.reply(f'''{hbold("У этого пользователя нельзя просматривать данные!")}''',
                                             protect_content=True, parse_mode='HTML', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                                          types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
                     elif str(
-                            user_id) == '8934346:bLVRDGpadRCgCBf5sS1crWEm4bpgT2BTkAq9biZR' and message.chat.id == 1251526792:
+                            user_id) == "Owner FIC ID" and message.chat.id == "Owner UID":
                         access_command = 1
 
                 if access_command == 1:
@@ -587,7 +571,7 @@ async def command_handler(message: types.Message):
 
         elif command == 'off_app':
             try:
-                if message.chat.id == 1251526792:
+                if message.chat.id == "Owner UID":
                     connection = pymysql.connect(host=db_host, port=db_port, user=db_user, password=db_password,
                                                  database=db_database, cursorclass=cursors.DictCursor)
                     cursor = connection.cursor()
@@ -609,7 +593,7 @@ async def command_handler(message: types.Message):
 
         elif command == 'on_app':
             try:
-                if message.chat.id == 1251526792:
+                if message.chat.id == "Owner UID":
                     connection = pymysql.connect(host=db_host, port=db_port, user=db_user, password=db_password,
                                                  database=db_database, cursorclass=cursors.DictCursor)
                     cursor = connection.cursor()
@@ -698,7 +682,7 @@ async def command_handler(message: types.Message):
                     connection.commit()
 
                     for user_chat_id in user_ids_db:
-                        if user_chat_id['user_id'] != 1251526792:
+                        if user_chat_id['user_id'] != "Owner UID":
                             cursor.execute('select username_tg from Data where user_id={}'.format(int(user_chat_id['user_id'])))
                             fnmtg = cursor.fetchone()
                             fnmtg = fnmtg['username_tg']
@@ -757,7 +741,7 @@ async def command_handler(message: types.Message):
 
 @dp.message_handler()
 async def listener(message: types.Message):
-    if message.chat.id in [1251526792]:
+    if message.chat.id in ["Admins UID"]:
         parts = message.text.split(' ')
         if len(parts) > 1:
             if parts[0] not in ['/start', '/show', '/set', '/set_access', '/on_app', '/off_app', '/players', '/notify', '/test']:
@@ -780,7 +764,7 @@ async def player_menu(call: types.CallbackQuery):
     elif acs == 3:
         await call.answer(text='Упс... Похоже, что сейчас проходят технические работы!', show_alert=True)
     else:
-        if call.message.chat.id in [1251526792]:
+        if call.message.chat.id in ["Admins UID"]:
             reply_markup = types.InlineKeyboardMarkup(row_width=3).add(
                 types.InlineKeyboardButton(text="Реф. ссылка", callback_data="referral_link"),
                 types.InlineKeyboardButton(text="FIC ID", callback_data="fic_id")
@@ -847,7 +831,7 @@ async def get_my_stats(call: types.CallbackQuery):
         connection.commit()
 
         if rw == 1:
-            if call.message.chat.id == 1251526792:
+            if call.message.chat.id == "Owner UID":
                 reply_markup = types.InlineKeyboardMarkup(row_width=3).add(
                     types.InlineKeyboardButton(text="Реф. ссылка", callback_data="referral_link"),
                     types.InlineKeyboardButton(text="FIC ID", callback_data="fic_id")
@@ -990,7 +974,6 @@ async def process_callback_change_text(call: types.CallbackQuery):
                 rwuid = int((rwuid[0])['register_was'])
 
                 document = config.FIC_APP_file_id
-                # document = InputFile(r'Resources/App/FigmentInterplanetaryCoin App.apk')
 
                 if rwuid == 0:
                     await bot.send_document(chat_id=uids, document=document,
@@ -1014,56 +997,7 @@ async def process_callback_change_text(call: types.CallbackQuery):
             else:
                 print(f"Ошибка: {e}")
                 await call.answer(text='При проверке подписки на тг-канал произошла ошибка!\n\nПожалуйста, попробуйте повторить попытку позже...', show_alert=True)
-        # user_channel_status = await bot.get_chat_member(chat_id='@FigmentInterplanetaryCoin', user_id=uids)
-        # user_channel_status = re.findall(r"\w*", str(user_channel_status))
-        # try:
-        #     if user_channel_status[70] != 'left':
-        #         cursor.execute('select register_was from Data where user_id={}'.format(uids))
-        #         rwuid = cursor.fetchall()
-        #         connection.commit()
-        #         rwuid = int((rwuid[0])['register_was'])
-        #
-        #         if rwuid == 0:
-        #             document = InputFile(r'Resources/App/FigmentInterplanetaryCoin App.apk')
-        #             await bot.send_document(chat_id=uids, document=document, caption=f'''<b>Ваш User_ID для Регистрации: {hcode(f"{uids}")}</b>''', parse_mode='HTML', protect_content=False)
-        #         else:
-        #             cursor.execute('select fic_id from Data where user_id={}'.format(uids))
-        #             fic_id = cursor.fetchall()
-        #             connection.commit()
-        #             fic_id = (fic_id[0])['fic_id']
-        #
-        #             document = InputFile(r'Resources/App/FigmentInterplanetaryCoin App.apk')
-        #             await bot.send_document(chat_id=uids, document=document, caption=f'''<b>Ваш FIC ID для Авторизации:\n\n{hcode(f"{fic_id}")}</b>''', parse_mode='HTML', protect_content=False)
-        #     else:
-        #         await call.answer(text='Для скачивания последней версии FIC App Вы должны быть подписаны на наш Тг-Канал t.me/FigmentInterplanetaryCoin!', show_alert=True)
-        #
-        # except:
-        #     if user_channel_status[60] != 'left':
-        #         cursor.execute('select register_was from Data where user_id={}'.format(uids))
-        #         rwuid = cursor.fetchall()
-        #         connection.commit()
-        #
-        #         rwuid_string = str(rwuid[0]).split("was': ", 1)[1].split("}")[0]
-        #         rwuid = int(rwuid_string)
-        #
-        #         if rwuid == 0:
-        #             document = InputFile(r'Resources/App/FigmentInterplanetaryCoin App.apk')
-        #             await bot.send_document(chat_id=uids, document=document,
-        #                                     caption=f'''<b>Ваш User_ID для Регистрации: {hcode(f"{uids}")}</b>''',
-        #                                     parse_mode='HTML', protect_content=False)
-        #         else:
-        #             cursor.execute('select fic_id from Data where user_id={}'.format(uids))
-        #             fic_id = cursor.fetchall()
-        #             connection.commit()
-        #             fic_id = (fic_id[0])['fic_id']
-        #
-        #             document = InputFile(r'Resources/App/FigmentInterplanetaryCoin App.apk')
-        #             await bot.send_document(chat_id=uids, document=document,
-        #                                     caption=f'''<b>Ваш FIC ID для Авторизации:\n\n{hcode(f"{fic_id}")}</b>''',
-        #                                     parse_mode='HTML', protect_content=False)
-        #     else:
-        #         await call.answer(text='Для скачивания последней версии FIC App Вы должны быть подписаны на наш Тг-Канал t.me/FigmentInterplanetaryCoin!', show_alert=True)
-
+                
         connection.close()
 
 @dp.callback_query_handler(text='admin-panel-commands')
