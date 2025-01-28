@@ -24,7 +24,7 @@ async def questions_handler(message: types.Message):
             types.InlineKeyboardButton(text='Как работает бот', callback_data='how_this_bot_works'),
             types.InlineKeyboardButton(text='Как поинтересоваться', callback_data='how_do_question')
         )
-        if message.chat.id in [1251526792]:
+        if message.chat.id in ["Admins UID"]:
             reply_markup.add(types.InlineKeyboardButton(text='Админ панель', callback_data='admin_panel'))
 
         await bot.send_photo(
@@ -65,7 +65,7 @@ async def questions_handler(message: types.Message):
             connection.commit()
             connection.close()
 
-            await bot.send_message(chat_id=1251526792, text=f'Только что был задан новый вопрос от @{message.from_user.username}!\n\nВопрос был записан под номером {hbold(f"#{len(fetch)}")}', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
+            await bot.send_message(chat_id="Owner UID", text=f'Только что был задан новый вопрос от @{message.from_user.username}!\n\nВопрос был записан под номером {hbold(f"#{len(fetch)}")}', reply_markup=types.InlineKeyboardMarkup(row_width=1).add(
                 types.InlineKeyboardButton(text="Удалить", callback_data="understood")
             ), parse_mode='HTML')
 
@@ -160,7 +160,7 @@ async def questions_handler(message: types.Message):
                     types.InlineKeyboardButton(text="Удалить", callback_data="understood")))
 
     elif command == 'questions':
-        if message.chat.id == 1251526792:
+        if message.chat.id == "Owner UID":
             connection = sqlite3.connect('Resources/Data/DataBase.db')
             cursor = connection.cursor()
             cursor.execute('select * from Data where question_opening=0')
@@ -301,7 +301,7 @@ async def questions_handler(message: types.Message):
                     types.InlineKeyboardButton(text="Понятно", callback_data="understood")))
 
     elif command == 'ideas':
-        if message.chat.id == 1251526792:
+        if message.chat.id == "Owner UID":
             connection = sqlite3.connect('Resources/Data/DataBase.db')
             cursor = connection.cursor()
             cursor.execute('select * from Ideas where idea_accepted=0')
@@ -457,7 +457,7 @@ async def questions_handler(message: types.Message):
 
 @dp.callback_query_handler(text='start_call')
 async def how_bot_works(call: types.CallbackQuery):
-    if call.message.chat.id in [1251526792]:
+    if call.message.chat.id in ["Owner UID"]:
         reply_markup = types.InlineKeyboardMarkup(row_width=2).add(
             types.InlineKeyboardButton(text="Как работает бот", callback_data="how_this_bot_works"),
             types.InlineKeyboardButton(text="Как поинтересоваться", callback_data="how_do_question"),
@@ -473,7 +473,7 @@ async def how_bot_works(call: types.CallbackQuery):
         types.InlineKeyboardButton(text='Как работает бот', callback_data='how_this_bot_works'),
         types.InlineKeyboardButton(text='Как поинтересоваться', callback_data='how_do_question')
     )
-    if call.message.chat.id in [1251526792]:
+    if call.message.chat.id in ["Owner UID"]:
         reply_markup.add(types.InlineKeyboardButton(text='Админ панель', callback_data='admin_panel'))
 
     await call.message.edit_caption(
